@@ -173,9 +173,9 @@ body{
 .cta-sub{font-size:12px !important;color:#888888 !important;line-height:1.5 !important;font-family:'The Seasons',Georgia,serif !important}
 .cta-divider{width:0.5px !important;height:48px !important;background:#333333 !important;flex-shrink:0 !important}
 .cta-agent{display:flex !important;flex-direction:column !important;gap:2px !important;flex-shrink:0 !important}
-.agent-name{font-size:14px !important;font-weight:500 !important;color:#b8976a !important;font-family:'The Seasons',Georgia,serif !important}
-.agent-title{font-size:11px !important;color:#888888 !important;letter-spacing:.05em !important;font-family:'Cinzel',serif !important}
-.agent-brokerage{font-size:10px !important;color:#aec7c9 !important;letter-spacing:.08em !important;text-transform:uppercase !important;margin-top:2px !important;font-family:'Cinzel',serif !important}
+.agent-name{font-size:14px !important;font-weight:500 !important;color:#ffffff !important;font-family:'The Seasons',Georgia,serif !important}
+.agent-title{font-size:11px !important;color:#b8976a !important;letter-spacing:.05em !important;font-family:'Cinzel',serif !important}
+.agent-brokerage{font-size:10px !important;letter-spacing:.08em !important;text-transform:uppercase !important;margin-top:2px !important;font-family:'Cinzel',serif !important}
 .cta-btn{
   flex-shrink:0 !important;display:inline-flex !important;align-items:center !important;gap:8px !important;
   height:42px !important;padding:0 22px !important;
@@ -331,7 +331,7 @@ body{
         <div class="cta-agent">
           <div class="agent-name">Jessica Williams</div>
           <div class="agent-title">Ms. Indianapolis Real Estate</div>
-          <div class="agent-brokerage">eXp Realty · Luxury</div>
+          <div class="agent-brokerage"><span style="color:#ffffff !important">eXp Realty</span> · <span style="color:#b8976a !important">Luxury</span></div>
           <div style="margin-top:6px;display:flex;flex-direction:column;gap:3px">
             <a href="tel:7656207349" style="font-size:11px;color:#aec7c9;text-decoration:none;letter-spacing:.03em;font-family:'Cinzel',serif">765.620.7349</a>
             <a href="mailto:ms.indyrealestate@gmail.com" style="font-size:11px;color:#aec7c9;text-decoration:none;letter-spacing:.03em;font-family:'Cinzel',serif">ms.indyrealestate@gmail.com</a>
