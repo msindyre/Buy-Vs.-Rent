@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buy vs. Rent Analysis | Jessica Williams | Ms. Indianapolis Real Estate</title>
+<meta name="description" content="Should you buy or keep renting? Use this free calculator to see the true monthly cost and year-over-year wealth comparison — presented by Jessica Williams, Ms. Indianapolis Real Estate with eXp Realty Luxury.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+@font-face{font-family:'The Seasons';src:url('https://fonts.cdnfonts.com/s/17548/TheSeasons-lt.woff') format('woff');font-weight:300;font-style:normal}
+@font-face{font-family:'The Seasons';src:url('https://fonts.cdnfonts.com/s/17548/TheSeasons-reg.woff') format('woff');font-weight:400;font-style:normal}
+@font-face{font-family:'The Seasons';src:url('https://fonts.cdnfonts.com/s/17548/TheSeasons-bd.woff') format('woff');font-weight:500;font-style:normal}
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#b8976a;
+  --gold-light:#d4b483;
+  --gold-dark:#8a6e47;
+  --teal:#aec7c9;
+  --ink:#0d0d0d;
+  --ink2:#1a1a1a;
+  --offwhite:#f5f2ee;
+  --muted:#6b6459;
+}
+
+body{
+  font-family:'The Seasons',Georgia,serif !important;
+  background:#f0ede8 !important;
+  color:#0d0d0d !important;
+  min-height:100vh !important;
+  padding:2rem 1rem !important;
+}
+.outer{
+  border:0.5px solid #2a2a2a !important;
+  border-radius:14px !important;
+  overflow:hidden !important;
+  background:#f5f2ee !important;
+}
+
+.page-wrap{
+  max-width:780px;
+  margin:0 auto;
+}
+
+.outer{
+  border:0.5px solid #2a2a2a;
+  border-radius:14px;
+  overflow:hidden;
+  background:var(--offwhite);
+}
+
+.luxury-header{
+  background:#0d0d0d !important;
+  padding:1.5rem 1.75rem !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:1rem !important;
+  flex-wrap:wrap !important;
+}
+.brand-name{font-size:20px !important;font-weight:500 !important;color:#b8976a !important;letter-spacing:.08em !important;font-family:'Cinzel',serif !important}
+.brand-sub{font-size:10px !important;color:#888 !important;letter-spacing:.1em !important;text-transform:uppercase !important;margin-top:4px !important;font-family:'Cinzel',serif !important}
+.tool-label{font-size:10px !important;letter-spacing:.12em !important;text-transform:uppercase !important;color:#b8976a !important;border:0.5px solid #8a6e47 !important;padding:4px 14px !important;border-radius:20px !important;font-family:'Cinzel',serif !important;white-space:nowrap !important}
+
+.wrap{padding:1.5rem 1.75rem}
+
+.section-title{
+  font-size:10px;font-weight:500;color:var(--gold-dark);
+  letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:10px;margin-top:1.5rem;
+  display:flex;align-items:center;gap:8px;
+  font-family:'Cinzel',serif;
+}
+.section-title::after{content:'';flex:1;height:0.5px;background:var(--gold-dark);opacity:.35}
+.section-title:first-child{margin-top:0}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:600px){
+  .grid-2{grid-template-columns:1fr}
+  .grid-3{grid-template-columns:1fr 1fr}
+  .luxury-header{flex-direction:column;align-items:flex-start;gap:.75rem}
+}
+
+.input-group{display:flex;flex-direction:column;gap:4px}
+.input-group label{font-size:11px;color:var(--muted);letter-spacing:.03em;font-family:'Cinzel',serif}
+.input-group input{
+  width:100%;height:38px;padding:0 10px;
+  border-radius:6px;border:0.5px solid #c8c2b8;
+  background:#fff;color:var(--ink);
+  font-size:13px;font-family:'The Seasons',Georgia,serif;
+}
+.input-group input:focus{outline:none;border-color:var(--gold)}
+
+.card{background:#fff;border:0.5px solid #ddd8d0;border-radius:10px;padding:1rem 1.25rem}
+
+.metric-card{background:#fff;border:0.5px solid #ddd8d0;border-radius:8px;padding:.875rem 1rem}
+.metric-label{font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;font-family:'Cinzel',serif}
+.metric-value{font-size:20px;font-weight:500;font-family:'The Seasons',Georgia,serif}
+.metric-sub{font-size:11px;color:#999;margin-top:2px;font-family:'The Seasons',Georgia,serif}
+
+.verdict{border-radius:10px;padding:1rem 1.25rem;margin-bottom:1.25rem}
+.verdict.buy{background:#f0ede7;border-left:3px solid var(--gold)}
+.verdict.rent{background:#fdf0ee;border-left:3px solid #c0725a}
+.verdict.neutral{background:#f0f4f4;border-left:3px solid var(--teal)}
+.verdict-head{font-size:14px;font-weight:500;margin-bottom:4px;color:var(--ink);font-family:'Cinzel',serif}
+.verdict-detail{font-size:12px;color:var(--muted);line-height:1.6}
+
+.breakdown-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:0.5px solid #f0ece6;font-size:12px}
+.breakdown-row:last-child{border-bottom:none}
+.breakdown-row .item{color:var(--muted)}
+.breakdown-row .amount{font-weight:500;color:var(--ink)}
+.breakdown-row.total{border-top:0.5px solid #ddd8d0;margin-top:4px;padding-top:8px;border-bottom:none}
+.breakdown-row.total .item,.breakdown-row.total .amount{font-weight:500;font-size:13px;color:var(--ink)}
+
+.col-header{font-size:11px;font-weight:500;color:var(--ink);padding-bottom:8px;border-bottom:0.5px solid #e8e4de;margin-bottom:4px;letter-spacing:.06em;text-transform:uppercase;font-family:'Cinzel',serif}
+
+.side-label{font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:8px;font-family:'Cinzel',serif}
+.side-label.buy{background:#f0ede7;color:var(--gold-dark);border:0.5px solid var(--gold-dark)}
+.side-label.rent{background:#fdf0ee;color:#a05840;border:0.5px solid #c8866e}
+
+.calc-btn{
+  width:100%;height:44px;
+  background:var(--ink);color:var(--gold);
+  border:0.5px solid var(--gold-dark);border-radius:8px;
+  font-size:12px;font-weight:500;cursor:pointer;
+  margin-top:1rem;font-family:'Cinzel',serif;
+  letter-spacing:.1em;text-transform:uppercase;
+  transition:background .2s,color .2s;
+}
+.calc-btn:hover{background:var(--gold);color:var(--ink)}
+
+.results-wrap{display:none}
+.results-wrap.visible{display:block}
+
+.year-table{width:100%;border-collapse:collapse;font-size:11.5px;table-layout:fixed}
+.year-table th{text-align:right;padding:6px 8px;color:var(--muted);font-weight:500;border-bottom:0.5px solid #ddd8d0;font-size:10px;letter-spacing:.04em;text-transform:uppercase;font-family:'Cinzel',serif}
+.year-table th:first-child{text-align:left}
+.year-table td{text-align:right;padding:5px 8px;border-bottom:0.5px solid #f0ece6;color:var(--ink)}
+.year-table td:first-child{text-align:left;color:var(--muted);font-family:'Cinzel',serif;font-size:11px}
+.year-table tr.highlight td{background:#f8f4ee;font-weight:500}
+.pos{color:#6a8c3a}
+.neg{color:#a05840}
+
+.divider{height:0.5px;background:#ddd8d0;margin:1.25rem 0}
+
+.print-btn{
+  display:flex;align-items:center;gap:6px;height:34px;padding:0 14px;
+  border:0.5px solid #c8c2b8;border-radius:6px;
+  background:#fff;color:var(--muted);
+  font-size:11px;cursor:pointer;
+  font-family:'Cinzel',serif;letter-spacing:.05em;
+  transition:border-color .15s,color .15s;
+}
+.print-btn:hover{border-color:var(--gold);color:var(--gold-dark)}
+
+.cta-block{
+  background:#0d0d0d !important;
+  border-radius:10px !important;
+  padding:1.5rem 1.75rem !important;
+  margin-top:1.25rem !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:1rem !important;
+  flex-wrap:wrap !important;
+}
+.cta-text-label{font-size:10px !important;letter-spacing:.12em !important;text-transform:uppercase !important;color:#b8976a !important;margin-bottom:6px !important;font-family:'Cinzel',serif !important}
+.cta-headline{font-size:17px !important;font-weight:500 !important;color:#ffffff !important;margin-bottom:6px !important;font-family:'The Seasons',Georgia,serif !important}
+.cta-sub{font-size:12px !important;color:#888888 !important;line-height:1.5 !important;font-family:'The Seasons',Georgia,serif !important}
+.cta-divider{width:0.5px !important;height:48px !important;background:#333333 !important;flex-shrink:0 !important}
+.cta-agent{display:flex !important;flex-direction:column !important;gap:2px !important;flex-shrink:0 !important}
+.agent-name{font-size:14px !important;font-weight:500 !important;color:#b8976a !important;font-family:'The Seasons',Georgia,serif !important}
+.agent-title{font-size:11px !important;color:#888888 !important;letter-spacing:.05em !important;font-family:'Cinzel',serif !important}
+.agent-brokerage{font-size:10px !important;color:#aec7c9 !important;letter-spacing:.08em !important;text-transform:uppercase !important;margin-top:2px !important;font-family:'Cinzel',serif !important}
+.cta-btn{
+  flex-shrink:0 !important;display:inline-flex !important;align-items:center !important;gap:8px !important;
+  height:42px !important;padding:0 22px !important;
+  background:#b8976a !important;color:#0d0d0d !important;
+  border-radius:6px !important;font-size:11px !important;font-weight:500 !important;
+  text-decoration:none !important;white-space:nowrap !important;
+  letter-spacing:.1em !important;text-transform:uppercase !important;
+  font-family:'Cinzel',serif !important;
+}
+.cta-btn:hover{background:#d4b483 !important}
+
+.page-footer{text-align:center;margin-top:1.5rem;font-size:11px;color:#999;font-family:'Cinzel',serif;letter-spacing:.04em;line-height:1.7}
+
+@media print{
+  body{background:#fff;padding:0}
+  .page-wrap{max-width:100%}
+  .outer{border:none;border-radius:0}
+  .luxury-header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .cta-block{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .calc-btn,.print-row,.page-footer{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+<div class="outer">
+
+  <div class="luxury-header">
+    <div>
+      <div class="brand-name">Jessica Williams</div>
+      <div class="brand-sub">Ms. Indianapolis Real Estate &nbsp;·&nbsp; eXp Realty Luxury</div>
+    </div>
+    <div class="tool-label">Buy vs. Rent Analysis</div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="card" style="margin-bottom:1rem">
+      <div class="section-title" style="margin-top:0">Home purchase details</div>
+      <div class="grid-3">
+        <div class="input-group"><label>Home purchase price</label><input type="number" id="price" value="400000" step="1000"></div>
+        <div class="input-group"><label>Down payment (%)</label><input type="number" id="dp" value="5" min="0" max="100" step="0.5"></div>
+        <div class="input-group"><label>Interest rate (%)</label><input type="number" id="rate" value="6.8" step="0.05"></div>
+      </div>
+      <div class="grid-3" style="margin-top:12px">
+        <div class="input-group"><label>Loan term (years)</label><input type="number" id="term" value="30" step="5"></div>
+        <div class="input-group"><label>Property tax rate (%)</label><input type="number" id="tax" value="1.1" step="0.05"></div>
+        <div class="input-group"><label>Annual home appreciation (%)</label><input type="number" id="appre" value="3" step="0.25"></div>
+      </div>
+      <div class="grid-3" style="margin-top:12px">
+        <div class="input-group"><label>Monthly HOA ($)</label><input type="number" id="hoa" value="0" step="25"></div>
+        <div class="input-group"><label>Monthly home insurance ($)</label><input type="number" id="ins" value="150" step="10"></div>
+        <div class="input-group"><label>Annual maintenance (% of value)</label><input type="number" id="maint" value="1" step="0.25"></div>
+      </div>
+      <div class="grid-3" style="margin-top:12px">
+        <div class="input-group"><label>Closing costs (%)</label><input type="number" id="close" value="3" step="0.25"></div>
+        <div class="input-group"><label>PMI rate (% if &lt;20% down)</label><input type="number" id="pmi" value="0.6" step="0.05"></div>
+        <div class="input-group"></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-title" style="margin-top:0">Renting details</div>
+      <div class="grid-3">
+        <div class="input-group"><label>Current monthly rent ($)</label><input type="number" id="rent" value="2000" step="50"></div>
+        <div class="input-group"><label>Annual rent increase (%)</label><input type="number" id="rentinc" value="3" step="0.25"></div>
+        <div class="input-group"><label>Renter's insurance ($/mo)</label><input type="number" id="rins" value="20" step="5"></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-title" style="margin-top:0">Analysis settings</div>
+      <div class="grid-3">
+        <div class="input-group"><label>Years to analyze</label><input type="number" id="years" value="10" min="1" max="30" step="1"></div>
+        <div class="input-group"><label>Investment return — opportunity cost (%)</label><input type="number" id="invest" value="7" step="0.25"></div>
+        <div class="input-group"></div>
+      </div>
+
+      <button class="calc-btn" onclick="calculate()">Calculate my analysis &rarr;</button>
+    </div>
+
+    <div class="results-wrap" id="results">
+
+      <div id="verdict-box" class="verdict neutral">
+        <div class="verdict-head" id="verdict-head"></div>
+        <div class="verdict-detail" id="verdict-detail"></div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:1rem">
+        <div>
+          <span class="side-label buy">Buying</span>
+          <div class="card" style="padding:.875rem 1rem">
+            <div class="col-header">True monthly cost</div>
+            <div id="buy-breakdown"></div>
+          </div>
+        </div>
+        <div>
+          <span class="side-label rent">Renting</span>
+          <div class="card" style="padding:.875rem 1rem">
+            <div class="col-header">True monthly cost</div>
+            <div id="rent-breakdown"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:1rem" id="wealth-cards"></div>
+
+      <div class="card" style="margin-bottom:1rem">
+        <div style="font-size:13px;font-weight:500;margin-bottom:.875rem;color:var(--ink);letter-spacing:.03em;font-family:'Cinzel',serif">Wealth comparison over time</div>
+        <div style="display:flex;gap:16px;margin-bottom:12px;font-size:11px;color:var(--muted);flex-wrap:wrap">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#b8976a;display:inline-block"></span>Net worth — buying</span>
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:14px;height:0;border-top:2px dashed #a05840;display:inline-block"></span>Net worth — renting</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#aec7c9;display:inline-block"></span>Home equity</span>
+        </div>
+        <div style="position:relative;width:100%;height:280px">
+          <canvas id="wealthChart" role="img" aria-label="Year over year wealth comparison chart showing net worth for buying versus renting and home equity growth"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:13px;font-weight:500;margin-bottom:.875rem;color:var(--ink);letter-spacing:.03em;font-family:'Cinzel',serif">Year-over-year breakdown</div>
+        <div style="overflow-x:auto">
+          <table class="year-table">
+            <thead>
+              <tr>
+                <th style="text-align:left">Year</th>
+                <th>Home value</th>
+                <th>Loan balance</th>
+                <th>Equity</th>
+                <th>Buy net worth</th>
+                <th>Rent net worth</th>
+                <th>Wealth gap</th>
+              </tr>
+            </thead>
+            <tbody id="yr-tbody"></tbody>
+          </table>
+        </div>
+        <p style="font-size:10px;color:#bbb;margin-top:.75rem;line-height:1.5;font-family:'The Seasons',Georgia,serif">Rent net worth assumes down payment + closing costs invested, growing at opportunity cost rate, minus rent paid vs. mortgage paid difference invested monthly. For illustration purposes only — not financial advice.</p>
+      </div>
+
+      <div class="print-row" style="display:flex;justify-content:flex-end;margin-top:1rem">
+        <button class="print-btn" onclick="window.print()">
+          &#128438; Print / save as PDF
+        </button>
+      </div>
+
+      <div class="cta-block">
+        <div style="flex:1;min-width:200px">
+          <div class="cta-text-label">Ready to take the next step?</div>
+          <div class="cta-headline">Let's turn these numbers into your reality.</div>
+          <div class="cta-sub">Your first home doesn't have to be your forever home — it just has to be the right next move. Let's build your strategy together.</div>
+        </div>
+        <div class="cta-divider"></div>
+        <div class="cta-agent">
+          <div class="agent-name">Jessica Williams</div>
+          <div class="agent-title">Ms. Indianapolis Real Estate</div>
+          <div class="agent-brokerage">eXp Realty · Luxury</div>
+          <div style="margin-top:6px;display:flex;flex-direction:column;gap:3px">
+            <a href="tel:7656207349" style="font-size:11px;color:#aec7c9;text-decoration:none;letter-spacing:.03em;font-family:'Cinzel',serif">765.620.7349</a>
+            <a href="mailto:ms.indyrealestate@gmail.com" style="font-size:11px;color:#aec7c9;text-decoration:none;letter-spacing:.03em;font-family:'Cinzel',serif">ms.indyrealestate@gmail.com</a>
+          </div>
+        </div>
+        <div class="cta-divider"></div>
+        <a href="https://calendly.com/journeywithjess89/60min" target="_blank" class="cta-btn">
+          Book a free strategy call &#8594;
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="page-footer">
+  &copy; 2026 Jessica Williams &nbsp;·&nbsp; Ms. Indianapolis Real Estate &nbsp;·&nbsp; eXp Realty Luxury<br>
+  This tool is for educational purposes only and does not constitute financial or legal advice. Consult a qualified professional before making real estate decisions.
+</div>
+
+</div>
+
+<script>
+let wealthChart=null;
+function fmt(n){return '$'+Math.round(n).toLocaleString()}
+
+function calculate(){
+  const price=parseFloat(document.getElementById('price').value)||400000;
+  const dpPct=parseFloat(document.getElementById('dp').value)||5;
+  const rate=parseFloat(document.getElementById('rate').value)||6.8;
+  const termYrs=parseInt(document.getElementById('term').value)||30;
+  const taxPct=parseFloat(document.getElementById('tax').value)||1.1;
+  const appre=parseFloat(document.getElementById('appre').value)||3;
+  const hoa=parseFloat(document.getElementById('hoa').value)||0;
+  const ins=parseFloat(document.getElementById('ins').value)||150;
+  const maintPct=parseFloat(document.getElementById('maint').value)||1;
+  const closePct=parseFloat(document.getElementById('close').value)||3;
+  const pmiRate=parseFloat(document.getElementById('pmi').value)||0.6;
+  const rent=parseFloat(document.getElementById('rent').value)||2000;
+  const rentInc=parseFloat(document.getElementById('rentinc').value)||3;
+  const rins=parseFloat(document.getElementById('rins').value)||20;
+  const years=parseInt(document.getElementById('years').value)||10;
+  const investRet=parseFloat(document.getElementById('invest').value)||7;
+
+  const dp=price*dpPct/100;
+  const loanAmt=price-dp;
+  const closingCosts=price*closePct/100;
+  const upfront=dp+closingCosts;
+  const monthlyRate=rate/100/12;
+  const n=termYrs*12;
+
+  const pmt=monthlyRate>0?loanAmt*monthlyRate*Math.pow(1+monthlyRate,n)/(Math.pow(1+monthlyRate,n)-1):loanAmt/n;
+  const monthlyTax=price*taxPct/100/12;
+  const monthlyMaint=price*maintPct/100/12;
+  const pmiMo=dpPct<20?loanAmt*pmiRate/100/12:0;
+  const totalBuyMo=pmt+monthlyTax+ins+hoa+monthlyMaint+pmiMo;
+
+  document.getElementById('buy-breakdown').innerHTML=
+    row('Principal & interest',fmt(pmt))+
+    row('Property taxes',fmt(monthlyTax))+
+    row('Home insurance',fmt(ins))+
+    (hoa>0?row('HOA fees',fmt(hoa)):'')+
+    row('Maintenance (est.)',fmt(monthlyMaint))+
+    (pmiMo>0?row('PMI',fmt(pmiMo)):'')+
+    totalRow('Total monthly cost',fmt(totalBuyMo));
+
+  document.getElementById('rent-breakdown').innerHTML=
+    row('Monthly rent',fmt(rent))+
+    row("Renter's insurance",fmt(rins))+
+    row('Maintenance','$0')+
+    row('Building equity','$0')+
+    totalRow('Total monthly cost',fmt(rent+rins));
+
+  const buyNWArr=[],rentNWArr=[],equityArr=[],yLabels=[],tableRows=[];
+
+  for(let y=1;y<=years;y++){
+    const homeVal=price*Math.pow(1+appre/100,y);
+    let bal=loanAmt;
+    const mr=monthlyRate;
+    for(let m=0;m<y*12;m++){const i=bal*mr;bal-=(pmt-i);if(bal<0)bal=0;}
+    const equity=homeVal-bal;
+    const rentNWInvested=upfront*Math.pow(1+investRet/100,y);
+    let diffInvested=0,cr=rent;
+    for(let yi=0;yi<y;yi++){
+      const diff=totalBuyMo*12-cr*12;
+      if(diff>0)diffInvested=(diffInvested+diff)*(1+investRet/100);
+      cr*=(1+rentInc/100);
+    }
+    const buyNW=Math.round(equity);
+    const rentNW=Math.round(rentNWInvested-diffInvested);
+    buyNWArr.push(buyNW);rentNWArr.push(rentNW);equityArr.push(Math.round(equity));yLabels.push('Yr '+y);
+    tableRows.push({y,homeVal:Math.round(homeVal),loanBal:Math.round(bal),equity:Math.round(equity),buyNW,rentNW,gap:buyNW-rentNW});
+  }
+
+  const finalGap=buyNWArr[years-1]-rentNWArr[years-1];
+  const vBox=document.getElementById('verdict-box');
+  const vHead=document.getElementById('verdict-head');
+  const vDetail=document.getElementById('verdict-detail');
+
+  if(finalGap>5000){
+    vBox.className='verdict buy';
+    vHead.textContent='Buying builds significantly more wealth over '+years+' years';
+    vDetail.textContent='After '+years+' years, buying puts you '+fmt(finalGap)+' ahead. Your home equity of '+fmt(equityArr[years-1])+' on a property worth '+fmt(tableRows[years-1].homeVal)+' is your primary wealth driver — even after accounting for the opportunity cost of your down payment.';
+  } else if(finalGap<-5000){
+    vBox.className='verdict rent';
+    vHead.textContent='Consider a longer horizon — renting may lead over '+years+' years';
+    vDetail.textContent='With these inputs, investing the down payment and difference leaves you '+fmt(Math.abs(finalGap))+' ahead over '+years+' years. Try extending the time horizon — buying typically overtakes renting between 7–10 years.';
+  } else {
+    vBox.className='verdict neutral';
+    vHead.textContent='Buying and renting are financially close over '+years+' years';
+    vDetail.textContent='The wealth difference after '+years+' years is '+fmt(Math.abs(finalGap))+'. At this level, lifestyle factors — stability, flexibility, community — may carry more weight than pure financial return.';
+  }
+
+  document.getElementById('wealth-cards').innerHTML=
+    metricCard('Buy: net worth at yr '+years,fmt(buyNWArr[years-1]),'Home equity primarily',finalGap>=0?'gold':'muted')+
+    metricCard('Rent: net worth at yr '+years,fmt(rentNWArr[years-1]),'Invested savings','muted')+
+    metricCard('Wealth gap (buy advantage)',fmt(finalGap),'How much more buying builds',finalGap>=0?'gold':'rust')+
+    metricCard('Home value at yr '+years,fmt(tableRows[years-1].homeVal),'At '+appre+'% annual appreciation','teal');
+
+  const tbody=document.getElementById('yr-tbody');
+  tbody.innerHTML='';
+  tableRows.forEach(r=>{
+    const isBreakeven=r.gap>0&&(r.y===1||tableRows[r.y-2].gap<=0);
+    const hl=isBreakeven?' class="highlight"':'';
+    const gc=r.gap>=0?'pos':'neg';
+    const gp=r.gap>=0?'+':'';
+    tbody.innerHTML+='<tr'+hl+'><td>Year '+r.y+(isBreakeven?' &#9733;':'')+'</td><td>'+fmt(r.homeVal)+'</td><td>'+fmt(r.loanBal)+'</td><td>'+fmt(r.equity)+'</td><td>'+fmt(r.buyNW)+'</td><td>'+fmt(r.rentNW)+'</td><td class="'+gc+'">'+gp+fmt(r.gap)+'</td></tr>';
+  });
+
+  if(wealthChart)wealthChart.destroy();
+  const ctx=document.getElementById('wealthChart').getContext('2d');
+  wealthChart=new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:yLabels,
+      datasets:[
+        {type:'bar',label:'Home equity',data:equityArr,backgroundColor:'rgba(174,199,201,0.55)',borderColor:'#aec7c9',borderWidth:1,order:2},
+        {type:'line',label:'Buy net worth',data:buyNWArr,borderColor:'#b8976a',backgroundColor:'rgba(184,151,106,0.08)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#b8976a',fill:false,order:1},
+        {type:'line',label:'Rent net worth',data:rentNWArr,borderColor:'#a05840',backgroundColor:'rgba(160,88,64,0.05)',borderWidth:2,borderDash:[5,4],pointRadius:3,pointBackgroundColor:'#a05840',fill:false,order:0}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+fmt(ctx.parsed.y)}}
+      },
+      scales:{
+        x:{ticks:{font:{size:11},color:'#888'},grid:{display:false}},
+        y:{ticks:{callback:v=>'$'+Math.round(v/1000)+'k',font:{size:11},color:'#888'},grid:{color:'rgba(0,0,0,0.05)'}}
+      }
+    }
+  });
+
+  document.getElementById('results').classList.add('visible');
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function row(l,a){return '<div class="breakdown-row"><span class="item">'+l+'</span><span class="amount">'+a+'</span></div>'}
+function totalRow(l,a){return '<div class="breakdown-row total"><span class="item">'+l+'</span><span class="amount">'+a+'</span></div>'}
+function metricCard(label,value,sub,color){
+  const colors={gold:'#8a6e47',teal:'#4a8385',rust:'#a05840',muted:'#6b6459'};
+  return '<div class="metric-card"><div class="metric-label">'+label+'</div><div class="metric-value" style="color:'+colors[color]+'">'+value+'</div><div class="metric-sub">'+sub+'</div></div>';
+}
+</script>
+</body>
+</html>
